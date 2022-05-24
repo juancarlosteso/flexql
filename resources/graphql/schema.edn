@@ -4,6 +4,9 @@
    :fields
    {:id          {:type (non-null ID)}
     :name        {:type (non-null String)}
+    :designers   {:type (list :Designer)
+                  :description "People who designed the board game."
+                  :resolve :game/designers}
     :summary     {:type String
                   :description "A one-line summary of the game."}
     :min_players {:type Int
@@ -22,12 +25,18 @@
    {:id          {:type (non-null ID)}
     :name        {:type (non-null String)}
     :uri         {:type String
-                  :description "Home page URL, if known."}}}
+                  :description "Home page URL, if known."}
+    :games       {:type (list :BoardGame)
+                  :description "Board games designed by a particular person."
+                  :resolve :designer/games}}}
   :Member
   {:description "A registered user."
    :fields
    {:id          {:type (non-null ID)}
-    :name        {:type (non-null String)}}}
+    :name        {:type (non-null String)}
+    :ratings     {:type (list :Rating)
+                  :description "List of ratings given by a member"
+                  :resolve :member/all-ratings}}}
   :Rating
   {:description "Score given to a board game by a member."
    :fields
@@ -51,18 +60,21 @@
    :resolve :members/all}
   :game
   {:type :BoardGame
-   :description "Retrieve a board game by its id."
-   :args {:id {:type (non-null ID)}}
+   :description "Retrieve a board game by its id or name."
+   :args {:id {:type ID}
+          :name {:type String}}
    :resolve :games/get}
   :designer
   {:type :Designer
-   :description "Retrieve a designer by its id."
-   :args {:id {:type (non-null ID)}}
+   :description "Retrieve a designer by its id or name."
+   :args {:id {:type ID}
+          :name {:type String}}
    :resolve :designers/get}
   :member
   {:type :Member
-   :description "Retrieve a member by its id."
-   :args {:id {:type (non-null ID)}}
+   :description "Retrieve a member by its id or name."
+   :args {:id {:type ID}
+          :name {:type String}}
    :resolve :members/get}}
  :mutations
  {:rate_game
@@ -71,4 +83,29 @@
    :args {:member_id {:type (non-null ID)}
           :game_id {:type (non-null ID)}
           :rating {:type (non-null Int)}}
-   :resolve :game/rate}}}
+   :resolve :game/rate}
+  :new_game
+  {:type :BoardGame
+   :description "Creates a new board game entry."
+   :args {:name {:type (non-null String)}
+          :summary {:type String}
+          :min_players {:type (non-null Int)}
+          :max_players {:type Int}}
+   :resolve :games/new}
+  :new_designer
+  {:type :Designer
+   :description "Creates a new designer entry."
+   :args {:name {:type (non-null String)}
+          :uri  {:type String}}
+   :resolve :designers/new}
+  :new_member
+  {:type :Member
+   :description "Creates a new member entry."
+   :args {:name {:type (non-null String)}}
+   :resolve :members/new}
+  :add_designer_to_game
+  {:type :BoardGame
+   :description "Links a designer to a game."
+   :args {:game_id     {:type (non-null ID)}
+          :designer_id {:type (non-null ID)}}
+   :resolve :game/new-designer}}}

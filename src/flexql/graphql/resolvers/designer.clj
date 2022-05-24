@@ -1,15 +1,20 @@
 (ns flexql.graphql.resolvers.designer
-  (:require [flexql.db.core :as db]
-            [flexql.db.utils :refer [->UUID]]
-            [honey.sql.helpers :as sqlh]))
-
-(def ^:private base-select (-> (sqlh/select :*) (sqlh/from :designer)))
+  (:require [com.walmartlabs.lacinia.resolve :refer [resolve-as]]
+            [flexql.model.board-game :as game]
+            [flexql.model.designer :as designer]))
 
 (defn index [{:keys [dbconn]} _ _]
-  (db/execute! dbconn base-select))
+  (designer/get-all dbconn))
 
-(defn find-by-id [{:keys [dbconn]} {:keys [id]} _]
-  (let [sql (-> base-select (sqlh/where [:= :id (->UUID id)]))]
-    (->> sql
-         (db/execute! dbconn)
-         first)))
+(defn find-by-id [{:keys [dbconn]} {:keys [id name]} _]
+  (cond
+    id    (designer/with-id dbconn id)
+    name  (designer/with-name dbconn name)
+    :else (resolve-as nil {:message "You need to provide an id or a name."
+                           :status 400})))
+
+(defn games [{:keys [dbconn]} _ {:keys [id]}]
+  (game/designed-by dbconn id))
+
+(defn create [{:keys [dbconn]} {:keys [name uri]} _]
+  (designer/create dbconn name uri))
