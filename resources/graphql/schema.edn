@@ -9,9 +9,29 @@
     :min_players {:type Int
                   :description "The minimum number of players the game supports."}
     :max_players {:type Int
-                  :description "The maximum number of players the game supports."}}}}
+                  :description "The maximum number of players the game supports."}}}
+  :Designer
+  {:description "A person who may have contributed to a board game design."
+   :fields
+   {:id          {:type (non-null ID)}
+    :name        {:type (non-null String)}
+    :uri         {:type String
+                  :description "Home page URL, if known."}}}
+  :Member
+  {:description "A registered user."
+   :fields
+   {:id          {:type (non-null ID)}
+    :name        {:type (non-null String)}}}}
  :queries
  {:all_games
   {:type (list :BoardGame)
    :description "All of the board games."
-   :resolve :games/all}}}
+   :resolve :games/all}
+  :all_designers
+  {:type (list :Designer)
+   :description "All of the designers."
+   :resolve :designers/all}
+  :all_members
+  {:type (list :Member)
+   :description "All of the members."
+   :resolve :members/all}}}
