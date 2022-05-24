@@ -1,0 +1,9 @@
+{:db
+ {:dbtype   "postgresql"
+  :dbname   "flexql_db"
+  :host     "localhost"
+  :port     "5555"
+  :user     "postgres"
+  :password "pilot"}
+ :http
+ {:port 8080}}
