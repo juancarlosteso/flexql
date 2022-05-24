@@ -9,7 +9,10 @@
     :min_players {:type Int
                   :description "The minimum number of players the game supports."}
     :max_players {:type Int
-                  :description "The maximum number of players the game supports."}}}
+                  :description "The maximum number of players the game supports."}
+    :avg_rating  {:type Float
+                  :description "Average rating for the board game."
+                  :resolve :game/rating}}}
   :Designer
   {:description "A person who may have contributed to a board game design."
    :fields

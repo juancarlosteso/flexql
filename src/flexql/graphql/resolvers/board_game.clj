@@ -13,3 +13,12 @@
     (->> sql
          (db/execute! dbconn)
          first)))
+
+(defn avg-rating-for [{:keys [dbconn]} _ {:keys [id]}]
+  (let [sql (-> (sqlh/select [[:avg :rating] :average])
+                (sqlh/from :game-rating)
+                (sqlh/where [:= :game-id (->UUID id)]))]
+    (->> sql
+         (db/execute! dbconn)
+         first
+         :average)))
