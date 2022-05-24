@@ -34,4 +34,19 @@
   :all_members
   {:type (list :Member)
    :description "All of the members."
-   :resolve :members/all}}}
+   :resolve :members/all}
+  :game
+  {:type :BoardGame
+   :description "Retrieve a board game by its id."
+   :args {:id {:type (non-null ID)}}
+   :resolve :games/get}
+  :designer
+  {:type :Designer
+   :description "Retrieve a designer by its id."
+   :args {:id {:type (non-null ID)}}
+   :resolve :designers/get}
+  :member
+  {:type :Member
+   :description "Retrieve a member by its id."
+   :args {:id {:type (non-null ID)}}
+   :resolve :members/get}}}

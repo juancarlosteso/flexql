@@ -6,4 +6,7 @@
 (def resolvers-map
   {:games/all game/index
    :designers/all designer/index
-   :members/all member/index})
+   :members/all member/index
+   :games/get game/find-by-id
+   :designers/get designer/find-by-id
+   :members/get member/find-by-id})
