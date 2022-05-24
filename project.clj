@@ -5,7 +5,7 @@
   :middleware [lein-tools-deps.plugin/resolve-dependencies-with-deps-edn]
   :lein-tools-deps/config {:config-files [:install :user :project]}
   :main flexql.core
-  :repl-options {:init-ns flexql.core}
+  :repl-options {:init-ns flexql.dev}
   :aliases
   {"db.rebuild" ["run" "-m" "flexql.db.builder"]
    "db.reseed"  ["run" "-m" "flexql.db.seeder"]})
