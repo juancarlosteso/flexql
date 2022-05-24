@@ -10,4 +10,5 @@
    :games/get game/find-by-id
    :designers/get designer/find-by-id
    :members/get member/find-by-id
-   :game/rating game/avg-rating-for})
+   :game/rating game/avg-rating-for
+   :game/all-ratings game/ratings})

@@ -22,3 +22,15 @@
          (db/execute! dbconn)
          first
          :average)))
+
+(defn ratings [{:keys [dbconn]} _ {:keys [id] :as game}]
+  (let [sql (-> (sqlh/select :gr.rating :m.*)
+                (sqlh/from [:game-rating :gr])
+                (sqlh/join [:member :m] [:= :m.id :gr.member_id])
+                (sqlh/where [:= :gr.game_id (->UUID id)]))
+        results (db/execute! dbconn sql)
+        ->rating (fn [{:keys [rating] :as r}]
+                   {:game game
+                    :rating rating
+                    :member (dissoc r :rating)})]
+    (map ->rating results)))

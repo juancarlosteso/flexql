@@ -12,7 +12,10 @@
                   :description "The maximum number of players the game supports."}
     :avg_rating  {:type Float
                   :description "Average rating for the board game."
-                  :resolve :game/rating}}}
+                  :resolve :game/rating}
+    :ratings     {:type (list :Rating)
+                  :description "List of ratings given by members."
+                  :resolve :game/all-ratings}}}
   :Designer
   {:description "A person who may have contributed to a board game design."
    :fields
@@ -24,7 +27,15 @@
   {:description "A registered user."
    :fields
    {:id          {:type (non-null ID)}
-    :name        {:type (non-null String)}}}}
+    :name        {:type (non-null String)}}}
+  :Rating
+  {:description "Score given to a board game by a member."
+   :fields
+   {:game        {:type (non-null :BoardGame)
+                  :description "Board game rated."}
+    :member      {:type (non-null :Member)
+                  :description "Member who rated the game."}
+    :rating      {:type (non-null Int)}}}}
  :queries
  {:all_games
   {:type (list :BoardGame)
