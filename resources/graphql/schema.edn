@@ -63,4 +63,12 @@
   {:type :Member
    :description "Retrieve a member by its id."
    :args {:id {:type (non-null ID)}}
-   :resolve :members/get}}}
+   :resolve :members/get}}
+ :mutations
+ {:rate_game
+  {:type :BoardGame
+   :description "Allows a member to rate a board game, or change a previous rating."
+   :args {:member_id {:type (non-null ID)}
+          :game_id {:type (non-null ID)}
+          :rating {:type (non-null Int)}}
+   :resolve :game/rate}}}

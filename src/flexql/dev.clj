@@ -4,9 +4,9 @@
             [flexql.db.core :as db]
             [flexql.graphql.schema :as schema]))
 
-(defn run [query]
+(defn run [query variables]
   (let [connection (-> cfg/config :db db/connection)]
     (lacinia/execute (schema/initialize)
                      query
-                     nil
+                     variables
                      {:dbconn connection})))
